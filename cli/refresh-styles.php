@@ -32,12 +32,14 @@ CLI::writeln("");
 CLI::writeln("Collection '{$name}' - Refreshing image styles...");
 
 foreach ($entries as $idx => $entry) {
+  CLI::writeln("Starting {$entry['_id']}...");
   // Flush all image styles.
   $app->module('imagestyles')->deleteEntryStyles($name, $entry);
   // Generate new image styles.
   $entry = $app->module('imagestyles')->updateEntryStyles($collection, $entry);
   // Save entry with style info
   $app->storage->save("collections/{$collection['_id']}", $entry);
+  CLI::writeln("Done ".($idx+1)." of ".count($entries)."...");
 }
 
 $total = count($entries);
